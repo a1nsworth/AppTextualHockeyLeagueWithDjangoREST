@@ -25,7 +25,7 @@ class Season(models.Model):
 
     date_begin = models.DateField()
     date_end = models.DateField()
-    hockey_league_name = models.ForeignKey(HockeyLeague, on_delete=models.SET_NULL, on_update=models.CASCADE)
+    hockey_league_name = models.OneToOneField(HockeyLeague, null=True, on_delete=models.SET_NULL)
 
 
 class Team(models.Model):
@@ -40,7 +40,7 @@ class Team(models.Model):
 
     name = models.CharField(max_length=30, primary_key=True)
     popularity = models.FloatField()
-    season_id = models.ForeignKey(Season, on_delete=models.SET_NULL, on_update=models.CASCADE)
+    season_id = models.OneToOneField(Season, null=True, on_delete=models.SET_NULL)
 
 
 class Match(models.Model):
@@ -58,8 +58,8 @@ class Match(models.Model):
     location = models.CharField(max_length=50)
     date_time_start = models.DateTimeField()
     spend_money = models.FloatField()
-    opponent_team_id_1 = models.ForeignKey(Team, on_delete=models.SET_NULL, on_update=models.CASCADE)
-    opponent_team_id_2 = models.ForeignKey(Team, on_delete=models.SET_NULL, on_update=models.CASCADE)
+    opponent_1_id = models.OneToOneField(Team, null=True, on_delete=models.SET_NULL, related_name='opponent_1_id')
+    opponent_2_id = models.OneToOneField(Team, null=True, on_delete=models.SET_NULL, related_name='opponent_2_id')
 
 
 class Player(models.Model):
@@ -93,10 +93,8 @@ class Player(models.Model):
         choices=Position.choices,
         null=True,
         default=None,
+        max_length=30,
     )
-
-    class Meta:
-        unique_together = ['sector_number', 'row_number', 'place_number']
 
 
 class PlayerStatistic(models.Model):
@@ -117,7 +115,7 @@ class PlayerStatistic(models.Model):
     count_goals_conceded = models.PositiveIntegerField()
     count_goals_pass = models.PositiveIntegerField()
     count_penalties = models.PositiveIntegerField()
-    player_id = models.ForeignKey(Player, on_delete=models.SET_NULL, on_update=models.CASCADE)
+    player_id = models.OneToOneField(Player, null=True, unique=True, on_delete=models.SET_NULL)
 
 
 class TypeTicket(models.Model):
@@ -177,6 +175,9 @@ class Ticket(models.Model):
     sector_number = models.PositiveIntegerField()
     row_number = models.PositiveIntegerField()
     place_number = models.PositiveIntegerField()
-    cash_machine_id = models.ForeignKey(CashMachine, on_delete=models.SET_NULL, on_update=models.CASCADE)
-    type_ticket_id = models.ForeignKey(TypeTicket, on_delete=models.CASCADE, on_update=models.CASCADE)
-    match_id = models.ForeignKey(Match, on_delete=models.SET_NULL, on_update=models.CASCADE)
+    cash_machine_id = models.OneToOneField(CashMachine, null=True, on_delete=models.SET_NULL)
+    type_ticket_id = models.OneToOneField(TypeTicket, on_delete=models.CASCADE)
+    match_id = models.OneToOneField(Match, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        unique_together = ['sector_number', 'row_number', 'place_number']
