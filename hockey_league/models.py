@@ -2,8 +2,6 @@ from django.db import models
 from django.core.validators import RegexValidator
 
 
-# TODO спеки
-
 class HockeyLeague(models.Model):
     """
     Модель Хоккейная Лига
@@ -32,7 +30,12 @@ class Season(models.Model):
 
 class Team(models.Model):
     """
-    Модель
+    Модель Команда
+
+    Атрибуты:
+        name: название комманды
+        popularity: популярность команды
+        season_id: айди сезона
     """
 
     name = models.CharField(max_length=30, primary_key=True)
@@ -42,7 +45,14 @@ class Team(models.Model):
 
 class Match(models.Model):
     """
+    Модель Матч
 
+    Атрибуты:
+        location: место проведения
+        date_time_start: дата и время начала матча
+        spend_money: потраченные деньги на организацию матча
+        opponent_team_id_1: айди команды противника
+        opponent_team_id_2: айди команды противника
     """
 
     location = models.CharField(max_length=50)
@@ -54,6 +64,14 @@ class Match(models.Model):
 
 class Player(models.Model):
     """
+    Модель Игрок
+
+    Атрибуты:
+        first_name: имя
+        second_name: фамилия
+        efficiency: эффективность
+        rating: рейтинг
+        position: позиция
     """
 
     class Position(models.TextChoices):
@@ -83,7 +101,15 @@ class Player(models.Model):
 
 class PlayerStatistic(models.Model):
     """
+    Модель Статистика Игрока
 
+    Атрибуты:
+        count_matches: кол-во матчей
+        count_goals: кол-во голов
+        count_goals_conceded: голов пропущено
+        count_goals_pass: количество гол + пас
+        count_penalties: количество штрафных
+        player_id: айди игрока
     """
 
     count_matches = models.PositiveIntegerField()
@@ -101,7 +127,6 @@ class TypeTicket(models.Model):
     Атрибуты:
         price: цена билета
         type: тип ("VIP", ...)
-
     """
 
     class Type(models.TextChoices):
@@ -122,7 +147,10 @@ class CashMachine(models.Model):
     Модель Касса
 
     Атрибуты:
-
+        total_tickets: всего билетов
+        sold_tickets: проданных билетов
+        remaining_tickets: оставшихся билетов
+        money_from_sale: денег с продажи
     """
 
     total_tickets = models.PositiveIntegerField()
@@ -133,7 +161,16 @@ class CashMachine(models.Model):
 
 class Ticket(models.Model):
     """
+    Модель Билет
 
+    Атрибуты:
+        sold: продан билет или нет
+        sector_number: номер сектора
+        row_number: номер ряда
+        place_number: номер места
+        cash_machine_id: айди кассы
+        type_ticket_id: айди типа билета
+        match_id: айди матча
     """
 
     sold = models.BooleanField(default=False)
