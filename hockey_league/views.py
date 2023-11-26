@@ -5,6 +5,7 @@ from .models import HockeyLeague
 from .serializers import HockeyLeagueSerializer
 
 
+
 class HockeyLeagueListView(ListAPIView):
     """Вывод всех хоккейных лиг"""
 
