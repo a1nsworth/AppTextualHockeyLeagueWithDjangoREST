@@ -10,7 +10,7 @@ class HockeyLeague(models.Model):
         name: название лиги
     """
 
-    name = models.CharField(max_length=30, primary_key=True)
+    name = models.CharField(max_length=100, primary_key=True)
 
 
 class Season(models.Model):
@@ -25,7 +25,7 @@ class Season(models.Model):
 
     date_begin = models.DateField()
     date_end = models.DateField()
-    hockey_league_name = models.OneToOneField(HockeyLeague, null=True, on_delete=models.SET_NULL)
+    hockey_league_name = models.ForeignKey(HockeyLeague, null=True, on_delete=models.SET_NULL)
 
 
 class Team(models.Model):
@@ -40,7 +40,7 @@ class Team(models.Model):
 
     name = models.CharField(max_length=30, primary_key=True)
     popularity = models.FloatField()
-    season_id = models.OneToOneField(Season, null=True, on_delete=models.SET_NULL)
+    season_id = models.ForeignKey(Season, unique=False, null=True, on_delete=models.SET_NULL)
 
 
 class Match(models.Model):
@@ -58,8 +58,11 @@ class Match(models.Model):
     location = models.CharField(max_length=50)
     date_time_start = models.DateTimeField()
     spend_money = models.FloatField()
-    opponent_1_id = models.OneToOneField(Team, null=True, on_delete=models.SET_NULL, related_name='opponent_1_id')
-    opponent_2_id = models.OneToOneField(Team, null=True, on_delete=models.SET_NULL, related_name='opponent_2_id')
+    opponent_1_name = models.ForeignKey(Team, related_name='opponent_1_id', null=True,
+                                        on_delete=models.SET_NULL, )
+    opponent_2_name = models.ForeignKey(Team, related_name='opponent_2_id', null=True,
+                                        on_delete=models.SET_NULL,
+                                        )
 
 
 class Player(models.Model):
@@ -80,8 +83,8 @@ class Player(models.Model):
         GOALIE = "GOALIE"
 
     NAME_VALIDATOR = RegexValidator(
-        regex='^[А-Я][а-я]{1,}$',
-        message='Имя должно содержать только буквы русского алфавита и начинаться с Заглавной буквы.',
+        regex='^[A-Z][a-z]{1,}$',
+        message='Имя должно содержать только буквы английского алфавита алфавита и начинаться с Заглавной буквы.',
         code='invalid_name',
     )
 
@@ -95,6 +98,7 @@ class Player(models.Model):
         default=None,
         max_length=30,
     )
+    team_name = models.ForeignKey(Team, null=True, on_delete=models.SET_NULL)
 
 
 class PlayerStatistic(models.Model):
@@ -115,7 +119,7 @@ class PlayerStatistic(models.Model):
     count_goals_conceded = models.PositiveIntegerField()
     count_goals_pass = models.PositiveIntegerField()
     count_penalties = models.PositiveIntegerField()
-    player_id = models.OneToOneField(Player, null=True, unique=True, on_delete=models.SET_NULL)
+    player_id = models.OneToOneField(Player, null=True, on_delete=models.SET_NULL)
 
 
 class TypeTicket(models.Model):
@@ -175,9 +179,9 @@ class Ticket(models.Model):
     sector_number = models.PositiveIntegerField()
     row_number = models.PositiveIntegerField()
     place_number = models.PositiveIntegerField()
-    cash_machine_id = models.OneToOneField(CashMachine, null=True, on_delete=models.SET_NULL)
-    type_ticket_id = models.OneToOneField(TypeTicket, on_delete=models.CASCADE)
-    match_id = models.OneToOneField(Match, null=True, on_delete=models.SET_NULL)
+    cash_machine_id = models.ForeignKey(CashMachine, null=True, on_delete=models.SET_NULL)
+    type_ticket_id = models.ForeignKey(TypeTicket, on_delete=models.CASCADE)
+    match_id = models.ForeignKey(Match, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         unique_together = ['sector_number', 'row_number', 'place_number']

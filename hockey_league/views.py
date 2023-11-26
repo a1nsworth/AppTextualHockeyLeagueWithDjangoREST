@@ -1,15 +1,17 @@
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from .models import HockeyLeague
-from .serializers import HockeyLeagueListSerializer
+from .serializers import HockeyLeagueSerializer
 
 
-class HockeyLeagueListView(APIView):
+class HockeyLeagueListView(ListAPIView):
     """Вывод всех хоккейных лиг"""
 
-    def get(self, request):
+    queryset = HockeyLeague.objects.all()
+    serializer_class = HockeyLeagueSerializer
 
-        hockey_league = HockeyLeague.objects.all()
-        serializer = HockeyLeagueListSerializer(hockey_league, many=True)
-        return Response(serializer.data)
+
+class HockeyLeagueDetailsView(RetrieveAPIView):
+    queryset = HockeyLeague.objects.all()
+    serializer_class = HockeyLeagueSerializer
