@@ -1,11 +1,10 @@
-from textual import app
-from textual.app import ComposeResult
+from textual.app import ComposeResult, App
 from textual.widgets import Header, Footer
 
 import tabs
 
 
-class Application(app.App):
+class Application(App):
     def compose(self) -> ComposeResult:
         yield Header()
         yield Footer()
