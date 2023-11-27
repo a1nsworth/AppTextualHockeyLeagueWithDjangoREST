@@ -1,4 +1,3 @@
-from rest_framework import routers
 from django.urls import path, include
 
 from . import views
@@ -13,4 +12,5 @@ urlpatterns = [
     path('', include(SimpleRouterCreator(r'ticket', views.TicketViewSet).urls)),
     path('', include(SimpleRouterCreator(r'match', views.MatchViewSet).urls)),
     path('', include(SimpleRouterCreator(r'team', views.TeamViewSet).urls)),
+    path('', include(SimpleRouterCreator(r'cash_machine', views.CashMachineReadOnlyViewSet).urls)),
 ]
