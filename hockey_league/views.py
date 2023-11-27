@@ -1,8 +1,9 @@
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from .models import HockeyLeague, Season, Player, PlayerStatistic, TypeTicket, Ticket, Team, Match
+from .models import HockeyLeague, Season, Player, PlayerStatistic, TypeTicket, Ticket, Team, Match, CashMachine
 from .serializers import HockeyLeagueSerializer, SeasonSerializer, PlayerSerializer, \
-    PlayerStatisticSerializer, TicketSerializer, MatchSerializer, TeamSerializer, TypeTicketSerializer
+    PlayerStatisticSerializer, TicketSerializer, MatchSerializer, TeamSerializer, TypeTicketSerializer, \
+    CashMachineSerializer
 
 
 class HockeyLeagueReadOnlyViewSet(ReadOnlyModelViewSet):
@@ -43,3 +44,8 @@ class MatchViewSet(ModelViewSet):
 class TeamViewSet(ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
+
+
+class CashMachineReadOnlyViewSet(ReadOnlyModelViewSet):
+    queryset = CashMachine.objects.all()
+    serializer_class = CashMachineSerializer

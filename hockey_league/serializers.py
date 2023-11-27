@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import HockeyLeague, Team, Match, Ticket, TypeTicket, Player, Season, PlayerStatistic
+from .models import HockeyLeague, Team, Match, Ticket, TypeTicket, Player, Season, PlayerStatistic, CashMachine
 
 
 class HockeyLeagueSerializer(serializers.ModelSerializer):
@@ -48,4 +48,10 @@ class SeasonSerializer(serializers.ModelSerializer):
 class PlayerStatisticSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayerStatistic
+        fields = '__all__'
+
+
+class CashMachineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CashMachine
         fields = '__all__'
