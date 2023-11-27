@@ -9,7 +9,7 @@ DOC_URL = API_URL + '/swagger/schema/?format=openapi'
 
 class Parser:
     """
-
+    Парсер с api DRF
     """
 
     def __init__(self):
