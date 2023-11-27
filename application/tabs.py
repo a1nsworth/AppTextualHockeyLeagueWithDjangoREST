@@ -14,6 +14,17 @@ ALL_GET_BY_KEY_URLS = PARSER.all_get_by_key_urls()
 
 
 def update_table_from_json(table: DataTable, json: list[dict[str, Any]] | dict[str, Any], columns: bool = True):
+    """
+    Очищает и заполняет таблицу новыми данными.
+
+    Args:
+        table: таблица.
+        json: данные для заполнения.
+        columns: при очистке таблицы, сохранять ли столбцы.
+
+    Returns:
+        None
+    """
     table.clear(columns)
 
     if isinstance(json, list):
@@ -27,6 +38,10 @@ def update_table_from_json(table: DataTable, json: list[dict[str, Any]] | dict[s
 
 
 class GetTab(TabPane):
+    """
+    Страница.
+    """
+
     DEFAULT_CSS = """
     #container_tab_get_response {
         layout: grid;
@@ -58,6 +73,12 @@ class GetTab(TabPane):
 
     @on(Button.Pressed, '#button_update_get_table')
     def update_table(self):
+        """
+        Обновляет таблицу при нажатии на кнопку.
+
+        Returns:
+            None
+        """
         selected_value = self.query_one('#select_get_request', Select).value
 
         if selected_value != Select.BLANK:
@@ -67,6 +88,10 @@ class GetTab(TabPane):
 
 
 class RetrieveTab(TabPane):
+    """
+    Страница
+    """
+
     DEFAULT_CSS = """
     #container_tab_retrieve_response {
         layout: grid;
@@ -137,6 +162,10 @@ class RetrieveTab(TabPane):
 
 
 class MainTabContent(TabbedContent):
+    """
+    Страницы приложения.
+    """
+
     def compose(self) -> ComposeResult:
         with TabbedContent():
             yield GetTab(title='GET Requests')
